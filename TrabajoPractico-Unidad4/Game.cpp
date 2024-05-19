@@ -70,7 +70,7 @@ void Game::Eventos()
 
 	float angleInDegrees = angle * 180.0f / b2_pi;
 
-
+	/// FALTA AVERIGUAR LA DISTANCIA ENTRE EL CURSOR Y EL CAÑON PARA APLICAR LA POTENCIA DEL DISPARO//
 
 	cannon->SetTransform(b2Vec2(6.0f, 93.0f), angle);
 	//
