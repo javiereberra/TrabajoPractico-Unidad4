@@ -69,8 +69,7 @@ void Game::Eventos()
 	//pasar el angulo a grados - por si fuera necesario más adelante//
 	float angleInDegrees = angle * 180.0f / b2_pi;
 
-	/// FALTA AVERIGUAR LA DISTANCIA ENTRE EL CURSOR Y EL CAÑON PARA APLICAR LA POTENCIA DEL DISPARO//
-
+	
 	//el cañon rota al ángulo en que se encuentra el cursor
 	cannon->SetTransform(b2Vec2(6.0f, 93.0f), angle);
 	
@@ -92,11 +91,15 @@ void Game::Eventos()
 			wnd->close();
 			break;
 		case Event::MouseButtonPressed:
+
+			
 			b2Body* bala = Box2DHelper::CreateCircularDynamicBody(phyWorld, 1, 1.0f, 4.0f, 0.0f);
+			
 			
 			
 			//se coloca la posición de la bala a la punta del cañon
 			bala->SetTransform(cannonTipPosition, 0);
+			
 			//se calculo el angulo del impulso tomando el angulo del cañon y convirtiendolo en radianes
 			//se le aplica una fuerza basada en la distancia entre el cañon y cursor
 			float impulseX = fuerza * cos((angleInDegrees) * b2_pi / 180.0f);
@@ -162,7 +165,7 @@ void Game::InitPhysics()
 
 	cannon = Box2DHelper::CreateRectangularStaticBody(phyWorld, 11, 1.2f);
 	
-
+	
 
 }
 

@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include "SFMLRenderer.h"
+#include "Ragdoll.h"
 #include <list>
 
 using namespace sf;
@@ -23,6 +24,7 @@ private:
 	float frameTime;
 	int fps;
 
+	
 	
 	//// ACÁ IRÍAN LOS CUERPOS AVATAR Y JOINTS
 	b2Body* cannon; 
