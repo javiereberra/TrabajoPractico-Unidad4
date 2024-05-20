@@ -1,34 +1,19 @@
 #pragma once
-#include "Box2DHelper.h"
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
+#include <Box2D/Box2D.h>
+#include "SFMLRenderer.h"
 
-
-using namespace sf;
-
-
-class Ragdoll
-{
+class Ragdoll {
 private:
-	
-
-
-	
-	b2Body* torso;
-
-	
-
+    b2Body* box1;
+    b2Body* box2;
+    b2RevoluteJoint* joint;
+    b2World* world;
 
 public:
+    Ragdoll(b2World* world, const b2Vec2& position, float boxWidth, float boxHeight);
+    ~Ragdoll();
 
-	Ragdoll(b2Vec2 posicion, b2World *phyWorld);
-	void Dibujar(RenderWindow& ventana);
-	void aplicar_fuerza(Vector2f posicion_m);
-	
-	
-	~Ragdoll(void);
-	
-
-
-
+    void setPosition(const b2Vec2& position);
+    void applyImpulse(const b2Vec2& impulse);
+    void dibujar(SFMLRenderer* renderer);
 };

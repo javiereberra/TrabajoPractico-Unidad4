@@ -39,6 +39,9 @@ void Game::Actualizar()
 void Game::Dibujar()
 {
 	//acà iría dibujar y actualizar el avatar
+	for (auto& ragdoll : ragdolls) {
+		ragdoll->dibujar(debugRender);
+	}
 
 }
 
@@ -92,24 +95,30 @@ void Game::Eventos()
 			break;
 		case Event::MouseButtonPressed:
 
-			
-			b2Body* bala = Box2DHelper::CreateCircularDynamicBody(phyWorld, 1, 1.0f, 4.0f, 0.0f);
+			Ragdoll* ragdoll = new Ragdoll(phyWorld, cannonTipPosition, 1.0f, 1.0f);
+			b2Vec2 impulse(fuerza * cos(angleInDegrees * b2_pi / 180.0f), fuerza * sin(angleInDegrees * b2_pi / 180.0f));
+			ragdoll->applyImpulse(impulse);
+			ragdolls.push_back(ragdoll);
+			break;
+
+				//b2Body* bala = Box2DHelper::CreateCircularDynamicBody(phyWorld, 1, 1.0f, 4.0f, 0.0f);
 			
 			
 			
 			//se coloca la posición de la bala a la punta del cañon
-			bala->SetTransform(cannonTipPosition, 0);
+				//bala->SetTransform(cannonTipPosition, 0);
 			
 			//se calculo el angulo del impulso tomando el angulo del cañon y convirtiendolo en radianes
 			//se le aplica una fuerza basada en la distancia entre el cañon y cursor
-			float impulseX = fuerza * cos((angleInDegrees) * b2_pi / 180.0f);
-			float impulseY = fuerza * sin((angleInDegrees) * b2_pi / 180.0f);
+			
+				//float impulseX = fuerza * cos((angleInDegrees) * b2_pi / 180.0f);
+				//float impulseY = fuerza * sin((angleInDegrees) * b2_pi / 180.0f);
 
 			// Crear un vector de impulso con las componentes calculadas
-			b2Vec2 impulso(impulseX, impulseY);
+				//b2Vec2 impulso(impulseX, impulseY);
 
 			// Aplicar el impulso al centro de la bala
-			bala->ApplyLinearImpulse(impulso, bala->GetWorldCenter(), true);
+				//bala->ApplyLinearImpulse(impulso, bala->GetWorldCenter(), true);
 
 			
 
@@ -169,5 +178,10 @@ void Game::InitPhysics()
 
 }
 
-Game::~Game(void)
-{ }
+Game::~Game(void){
+for (auto& ragdoll : ragdolls) {
+	delete ragdoll;
+}
+delete phyWorld;
+delete debugRender;
+ }
