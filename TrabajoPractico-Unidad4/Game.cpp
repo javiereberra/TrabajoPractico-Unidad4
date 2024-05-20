@@ -11,7 +11,7 @@ Game::Game(int ancho, int alto, std::string titulo)
 	frameTime = 1.0f / fps;
 	SetZoom();
 	InitPhysics();
-
+	
 
 }
 
@@ -44,6 +44,45 @@ void Game::Dibujar()
 
 void Game::Eventos()
 {
+
+	//fijar la posición del cañon
+	b2Vec2 cannonPosition(6.0f, 93.0f);
+
+	//sacar la posición del cursor del mouse y pasarla a la escala de box2d
+	sf::Vector2i mousePosition = sf::Mouse::getPosition(*wnd);
+	sf::Vector2f worldMousePosition = wnd->mapPixelToCoords(mousePosition);
+	b2Vec2 mouseWorldPosition(mousePosition.x * scaleX, mousePosition.y * scaleY);
+
+	//establecer la distancia entre el cursor y el cañon
+	b2Vec2 displacement = mouseWorldPosition - cannonPosition;
+	//obtener el ángulo del vector
+	float angle = atan2(displacement.y, displacement.x);
+
+
+	// Calcular la distancia entre el cañon y el cursor
+	float distance = sqrt(displacement.x * displacement.x + displacement.y * displacement.y);
+	//crear la potencia del cañon en base a la distancia del cursor
+	float fuerza = distance * 2;
+	
+
+
+	//pasar el angulo a grados - por si fuera necesario más adelante//
+	float angleInDegrees = angle * 180.0f / b2_pi;
+
+	/// FALTA AVERIGUAR LA DISTANCIA ENTRE EL CURSOR Y EL CAÑON PARA APLICAR LA POTENCIA DEL DISPARO//
+
+	//el cañon rota al ángulo en que se encuentra el cursor
+	cannon->SetTransform(b2Vec2(6.0f, 93.0f), angle);
+	
+	//la mitad de la longitud del cañon para obtener la punta
+	float cannonLargo = 5.5f;
+
+	//obtener la posición de la punta del cañon ajustandola al angulo de rotación
+	b2Vec2 cannonTipPosition(
+		cannonPosition.x + cannonLargo * cos(angle),
+		cannonPosition.y + cannonLargo * sin(angle)
+	);
+
 	Event evt;
 	while (wnd->pollEvent(evt))
 	{
@@ -52,28 +91,29 @@ void Game::Eventos()
 		case Event::Closed:
 			wnd->close();
 			break;
-		
+		case Event::MouseButtonPressed:
+			b2Body* bala = Box2DHelper::CreateCircularDynamicBody(phyWorld, 1, 1.0f, 4.0f, 0.0f);
+			
+			
+			//se coloca la posición de la bala a la punta del cañon
+			bala->SetTransform(cannonTipPosition, 0);
+			//se calculo el angulo del impulso tomando el angulo del cañon y convirtiendolo en radianes
+			//se le aplica una fuerza basada en la distancia entre el cañon y cursor
+			float impulseX = fuerza * cos((angleInDegrees) * b2_pi / 180.0f);
+			float impulseY = fuerza * sin((angleInDegrees) * b2_pi / 180.0f);
+
+			// Crear un vector de impulso con las componentes calculadas
+			b2Vec2 impulso(impulseX, impulseY);
+
+			// Aplicar el impulso al centro de la bala
+			bala->ApplyLinearImpulse(impulso, bala->GetWorldCenter(), true);
+
+			
 
 		}
 	}
-	b2Vec2 cannonPosition(6.0f, 93.0f);
 
-
-
-
-	sf::Vector2i mousePosition = sf::Mouse::getPosition(*wnd);
-	sf::Vector2f worldMousePosition = wnd->mapPixelToCoords(mousePosition);
-	b2Vec2 mouseWorldPosition(mousePosition.x * scaleX, mousePosition.y * scaleY);
-
-	b2Vec2 displacement = mouseWorldPosition - cannonPosition;
-	float angle = atan2(displacement.y, displacement.x);
-
-	float angleInDegrees = angle * 180.0f / b2_pi;
-
-	/// FALTA AVERIGUAR LA DISTANCIA ENTRE EL CURSOR Y EL CAÑON PARA APLICAR LA POTENCIA DEL DISPARO//
-
-	cannon->SetTransform(b2Vec2(6.0f, 93.0f), angle);
-	//
+	
 	
 }
 
@@ -121,7 +161,7 @@ void Game::InitPhysics()
 	float anguloEnRadianes = -45.0f * (b2_pi / 180.0f);
 
 	cannon = Box2DHelper::CreateRectangularStaticBody(phyWorld, 11, 1.2f);
-	//cannon->SetTransform(b2Vec2(6.0f, 93.0f), anguloEnRadianes);
+	
 
 
 }

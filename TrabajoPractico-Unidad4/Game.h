@@ -27,6 +27,7 @@ private:
 	//// ACÁ IRÍAN LOS CUERPOS AVATAR Y JOINTS
 	b2Body* cannon; 
 
+	//variables para medir la escala
 	float scaleX;
 	float scaleY;
 
