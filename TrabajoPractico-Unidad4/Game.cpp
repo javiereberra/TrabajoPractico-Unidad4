@@ -11,7 +11,7 @@ Game::Game(int ancho, int alto, std::string titulo)
 	frameTime = 1.0f / fps;
 	SetZoom();
 	InitPhysics();
-	
+
 
 }
 
@@ -65,17 +65,17 @@ void Game::Eventos()
 	// Calcular la distancia entre el cañon y el cursor
 	float distance = sqrt(displacement.x * displacement.x + displacement.y * displacement.y);
 	//crear la potencia del cañon en base a la distancia del cursor
-	float fuerza = distance * 2;
-	
+	float fuerza = distance * 15;
+
 
 
 	//pasar el angulo a grados - por si fuera necesario más adelante//
 	float angleInDegrees = angle * 180.0f / b2_pi;
 
-	
+
 	//el cañon rota al ángulo en que se encuentra el cursor
 	cannon->SetTransform(b2Vec2(6.0f, 93.0f), angle);
-	
+
 	//la mitad de la longitud del cañon para obtener la punta
 	float cannonLargo = 5.5f;
 
@@ -94,39 +94,43 @@ void Game::Eventos()
 			wnd->close();
 			break;
 		case Event::MouseButtonPressed:
-
-			Ragdoll* ragdoll = new Ragdoll(phyWorld, cannonTipPosition, 3.0f, 3.0f);
+			if (ragdolls.size() >= 5) {
+				// Eliminar el primer elemento si ya hay 5 ragdolls
+				delete ragdolls.front();
+				ragdolls.pop_front();
+			}
+			Ragdoll* ragdoll = new Ragdoll(phyWorld, cannonTipPosition);
 			b2Vec2 impulse(fuerza * cos(angleInDegrees * b2_pi / 180.0f), fuerza * sin(angleInDegrees * b2_pi / 180.0f));
 			ragdoll->applyImpulse(impulse);
 			ragdolls.push_back(ragdoll);
 			break;
 
-				//b2Body* bala = Box2DHelper::CreateCircularDynamicBody(phyWorld, 1, 1.0f, 4.0f, 0.0f);
-			
-			
-			
-			//se coloca la posición de la bala a la punta del cañon
-				//bala->SetTransform(cannonTipPosition, 0);
-			
-			//se calculo el angulo del impulso tomando el angulo del cañon y convirtiendolo en radianes
-			//se le aplica una fuerza basada en la distancia entre el cañon y cursor
-			
-				//float impulseX = fuerza * cos((angleInDegrees) * b2_pi / 180.0f);
-				//float impulseY = fuerza * sin((angleInDegrees) * b2_pi / 180.0f);
+			//b2Body* bala = Box2DHelper::CreateCircularDynamicBody(phyWorld, 1, 1.0f, 4.0f, 0.0f);
 
-			// Crear un vector de impulso con las componentes calculadas
-				//b2Vec2 impulso(impulseX, impulseY);
 
-			// Aplicar el impulso al centro de la bala
-				//bala->ApplyLinearImpulse(impulso, bala->GetWorldCenter(), true);
 
-			
+		//se coloca la posición de la bala a la punta del cañon
+			//bala->SetTransform(cannonTipPosition, 0);
+
+		//se calculo el angulo del impulso tomando el angulo del cañon y convirtiendolo en radianes
+		//se le aplica una fuerza basada en la distancia entre el cañon y cursor
+
+			//float impulseX = fuerza * cos((angleInDegrees) * b2_pi / 180.0f);
+			//float impulseY = fuerza * sin((angleInDegrees) * b2_pi / 180.0f);
+
+		// Crear un vector de impulso con las componentes calculadas
+			//b2Vec2 impulso(impulseX, impulseY);
+
+		// Aplicar el impulso al centro de la bala
+			//bala->ApplyLinearImpulse(impulso, bala->GetWorldCenter(), true);
+
+
 
 		}
 	}
 
-	
-	
+
+
 }
 
 void Game::SetZoom()
@@ -135,7 +139,7 @@ void Game::SetZoom()
 	camera.setSize(100.0f, 100.0f);
 	camera.setCenter(50.0f, 50.0f);
 	wnd->setView(camera);
-	
+
 
 	sf::Vector2f viewSize = camera.getSize();
 	sf::Vector2u windowSize = wnd->getSize();
@@ -173,15 +177,15 @@ void Game::InitPhysics()
 	float anguloEnRadianes = -45.0f * (b2_pi / 180.0f);
 
 	cannon = Box2DHelper::CreateRectangularStaticBody(phyWorld, 11, 1.2f);
-	
-	
+
+
 
 }
 
-Game::~Game(void){
-for (auto& ragdoll : ragdolls) {
-	delete ragdoll;
+Game::~Game(void) {
+	for (auto& ragdoll : ragdolls) {
+		delete ragdoll;
+	}
+	delete phyWorld;
+	delete debugRender;
 }
-delete phyWorld;
-delete debugRender;
- }

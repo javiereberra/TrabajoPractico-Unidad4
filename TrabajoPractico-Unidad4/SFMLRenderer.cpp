@@ -83,7 +83,7 @@ void SFMLRenderer::DrawTransform(const b2Transform& xf)
 		sf::Vertex(sf::Vector2f(p1.x, p1.y), Color::Red),
 		sf::Vertex(sf::Vector2f(p2.x, p2.y), Color::Red)
 	};
-	wnd->draw(line, 2, sf::Lines);
+	//wnd->draw(line, 2, sf::Lines);
 
 
 	p2 = p1 + k_axisScale * xf.q.GetYAxis();
@@ -93,7 +93,7 @@ void SFMLRenderer::DrawTransform(const b2Transform& xf)
 		sf::Vertex(sf::Vector2f(p1.x, p1.y), Color::Green),
 		sf::Vertex(sf::Vector2f(p2.x, p2.y), Color::Green)
 	};
-	wnd->draw(line2, 2, sf::Lines);
+	//wnd->draw(line2, 2, sf::Lines);
 }
 
 void SFMLRenderer::DrawPoint(const b2Vec2& p, float size, const b2Color& color)

@@ -24,10 +24,10 @@ private:
 	float frameTime;
 	int fps;
 
-	
-	
-	
-	b2Body* cannon; 
+
+
+
+	b2Body* cannon;
 
 	//variables para medir la escala
 	float scaleX;
