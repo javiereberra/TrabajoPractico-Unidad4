@@ -38,6 +38,7 @@ void SFMLRenderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, c
 
 void SFMLRenderer::DrawCircle(const b2Vec2& center, float radius, const b2Color& color)
 {
+	
 	sf::CircleShape circle(radius);
 	circle.setOrigin(radius, radius);
 	circle.setPosition(center.x, center.y);
@@ -49,6 +50,7 @@ void SFMLRenderer::DrawCircle(const b2Vec2& center, float radius, const b2Color&
 
 void SFMLRenderer::DrawSolidCircle(const b2Vec2& center, float radius, const b2Vec2& axis, const b2Color& color)
 {
+	
 	sf::CircleShape circle(radius);
 	circle.setOrigin(radius, radius);
 	circle.setPosition(center.x, center.y);
@@ -103,8 +105,8 @@ void SFMLRenderer::DrawPoint(const b2Vec2& p, float size, const b2Color& color)
 	circle.setFillColor(box2d2SFMLColor(color));
 
 	circle.setOutlineColor(box2d2SFMLColor(color));
-
-	wnd->draw(circle);
+	//omitimos esto para que no se dibujen los círculos
+	//wnd->draw(circle);
 }
 
 void SFMLRenderer::DrawString(int x, int y, const char* string, ...)
@@ -139,3 +141,4 @@ Color SFMLRenderer::box2d2SFMLColor(const b2Color& _color)
 
 	return Color(R,G,B);
 }
+

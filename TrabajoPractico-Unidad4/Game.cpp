@@ -95,7 +95,7 @@ void Game::Eventos()
 			break;
 		case Event::MouseButtonPressed:
 
-			Ragdoll* ragdoll = new Ragdoll(phyWorld, cannonTipPosition, 1.0f, 1.0f);
+			Ragdoll* ragdoll = new Ragdoll(phyWorld, cannonTipPosition, 3.0f, 3.0f);
 			b2Vec2 impulse(fuerza * cos(angleInDegrees * b2_pi / 180.0f), fuerza * sin(angleInDegrees * b2_pi / 180.0f));
 			ragdoll->applyImpulse(impulse);
 			ragdolls.push_back(ragdoll);

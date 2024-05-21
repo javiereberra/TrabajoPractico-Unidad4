@@ -28,4 +28,7 @@ public:
 	void DrawPoint(const b2Vec2& p, float size, const b2Color& color) override;
 	void DrawString(int x, int y, const char* string, ...);
 	void DrawAABB(b2AABB* aabb, const b2Color& color);
+	
+
+
 };
