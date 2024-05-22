@@ -33,7 +33,7 @@ private:
 	float scaleX;
 	float scaleY;
 
-
+	//lista de ragdolls
 	std::list<Ragdoll*> ragdolls;
 
 public:
@@ -45,7 +45,7 @@ public:
 	//main gameloop
 
 	void loop();
-	void Dibujar();
+	void Dibujar(); //realmente no se utiliza porque lo hace todo el sfmlrenderer pero lo dejamos para el final
 	void Actualizar();
 	void Eventos();
 	void SetZoom();

@@ -2,6 +2,7 @@
 #include "Box2DHelper.h"
 #include <iostream>
 
+//constructor que define ventana, frames, la escala e inicia físicas
 Game::Game(int ancho, int alto, std::string titulo)
 {
 	wnd = new RenderWindow(VideoMode(ancho, alto), titulo);
@@ -12,9 +13,9 @@ Game::Game(int ancho, int alto, std::string titulo)
 	SetZoom();
 	InitPhysics();
 
-
 }
 
+//el clásico gameloop
 void Game::loop()
 {
 	while (wnd->isOpen())
@@ -28,6 +29,7 @@ void Game::loop()
 	}
 }
 
+//actualiza el phyworld
 void Game::Actualizar()
 {
 	phyWorld->Step(frameTime, 8, 8);
@@ -35,7 +37,7 @@ void Game::Actualizar()
 	phyWorld->DebugDraw();
 
 }
-
+//para dibujar objetos, no se usa pero lo dejamos para cuando hagamos el final con los sprites
 void Game::Dibujar()
 {
 	
@@ -73,7 +75,7 @@ void Game::Eventos()
 	//el cañon rota al ángulo en que se encuentra el cursor
 	cannon->SetTransform(b2Vec2(6.0f, 93.0f), angle);
 
-	//la mitad de la longitud del cañon para obtener la punta
+	//la mitad aproximada de la longitud del cañon para obtener la punta
 	float cannonLargo = 5.5f;
 
 	//obtener la posición de la punta del cañon ajustandola al angulo de rotación
@@ -92,36 +94,19 @@ void Game::Eventos()
 			break;
 		case Event::MouseButtonPressed:
 			if (ragdolls.size() >= 5) {
-				// Eliminar el primer elemento si ya hay 5 ragdolls
+				// Eliminar el primer ragdoll si ya hay 5 ragdolls
 				delete ragdolls.front();
 				ragdolls.pop_front();
 			}
+			//crear el ragdoll en la punta del cañon
 			Ragdoll* ragdoll = new Ragdoll(phyWorld, cannonTipPosition);
+			//aplicar el impulso basado en la fuerza que está afectada por la distancia del cursor y el ángulo
 			b2Vec2 impulse(fuerza * cos(angleInDegrees * b2_pi / 180.0f), fuerza * sin(angleInDegrees * b2_pi / 180.0f));
+			//se aplica el impulso
 			ragdoll->applyImpulse(impulse);
 			ragdolls.push_back(ragdoll);
 			break;
-
-			//b2Body* bala = Box2DHelper::CreateCircularDynamicBody(phyWorld, 1, 1.0f, 4.0f, 0.0f);
-
-
-
-		//se coloca la posición de la bala a la punta del cañon
-			//bala->SetTransform(cannonTipPosition, 0);
-
-		//se calculo el angulo del impulso tomando el angulo del cañon y convirtiendolo en radianes
-		//se le aplica una fuerza basada en la distancia entre el cañon y cursor
-
-			//float impulseX = fuerza * cos((angleInDegrees) * b2_pi / 180.0f);
-			//float impulseY = fuerza * sin((angleInDegrees) * b2_pi / 180.0f);
-
-		// Crear un vector de impulso con las componentes calculadas
-			//b2Vec2 impulso(impulseX, impulseY);
-
-		// Aplicar el impulso al centro de la bala
-			//bala->ApplyLinearImpulse(impulso, bala->GetWorldCenter(), true);
-
-
+					
 
 		}
 	}
@@ -130,6 +115,7 @@ void Game::Eventos()
 
 }
 
+//fijamos la escala
 void Game::SetZoom()
 {
 	View camera;
@@ -137,7 +123,7 @@ void Game::SetZoom()
 	camera.setCenter(50.0f, 50.0f);
 	wnd->setView(camera);
 
-
+	//obtenemos la escala para usarla con el cursor
 	sf::Vector2f viewSize = camera.getSize();
 	sf::Vector2u windowSize = wnd->getSize();
 	scaleX = viewSize.x / windowSize.x;
@@ -167,13 +153,14 @@ void Game::InitPhysics()
 	b2Body* techo = Box2DHelper::CreateRectangularStaticBody(phyWorld, 100, 10);
 	techo->SetTransform(b2Vec2(50.0f, 0.0f), 0.0f);
 
+	//creamos dos obstáculos estáticos
 	b2Body* obstaculo1 = Box2DHelper::CreateRectangularStaticBody(phyWorld, 20, 5);
 	obstaculo1->SetTransform(b2Vec2(60.0f, 60.0f), 0.0f);
 
 	b2Body* obstaculo2 = Box2DHelper::CreateRectangularStaticBody(phyWorld, 20, 10);
 	obstaculo2->SetTransform(b2Vec2(80.0f, 80.0f), 0.0f);
 
-
+	//creamos dos obstàculos dinámicos
 	b2Body* obstaculo3 = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 5, 10, 0.1f, 0.1f, 0.1f);
 	obstaculo3->SetTransform(b2Vec2(80.0f, 70.0f), 0.0f);
 
@@ -181,18 +168,18 @@ void Game::InitPhysics()
 	obstaculo4->SetTransform(b2Vec2(55.0f, 53.0f), 0.0f);
 
 
-
+	//creamos la base del cañon
 	b2Body* cannon_base = Box2DHelper::CreateCircularStaticBody(phyWorld, 2);
 	cannon_base->SetTransform(b2Vec2(6.0f, 93.0f), 0.0f);
 
-	float anguloEnRadianes = -45.0f * (b2_pi / 180.0f);
-
+	//creamos el cañon
 	cannon = Box2DHelper::CreateRectangularStaticBody(phyWorld, 11, 1.2f);
 
 
 
 }
 
+//destructor de game
 Game::~Game(void) {
 	for (auto& ragdoll : ragdolls) {
 		delete ragdoll;
