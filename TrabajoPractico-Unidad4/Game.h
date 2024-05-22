@@ -25,7 +25,7 @@ private:
 	int fps;
 
 
-
+	//cuerpo del cañon
 
 	b2Body* cannon;
 

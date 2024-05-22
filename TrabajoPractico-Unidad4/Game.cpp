@@ -38,10 +38,7 @@ void Game::Actualizar()
 
 void Game::Dibujar()
 {
-	//acà iría dibujar y actualizar el avatar
-	for (auto& ragdoll : ragdolls) {
-		ragdoll->dibujar(debugRender);
-	}
+	
 
 }
 

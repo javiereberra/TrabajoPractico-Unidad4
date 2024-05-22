@@ -4,13 +4,15 @@
 
 class Ragdoll {
 private:
-    b2Body* box1;
-    b2Body* box2;
-    b2Body* box3;
-    b2Body* box4;
-    b2Body* box5;
-    b2Body* box6;
+    //las partes del ragdoll
+    b2Body* torso;
+    b2Body* cabeza;
+    b2Body* brazoD;
+    b2Body* brazoI;
+    b2Body* piernaD;
+    b2Body* piernaI;
 
+    //los joints que unen a todas las partes
     b2RevoluteJoint* jointHeadTorso;
     b2RevoluteJoint* jointRightArmTorso;
     b2RevoluteJoint* jointLeftArmTorso;
@@ -26,5 +28,5 @@ public:
 
   
     void applyImpulse(const b2Vec2& impulse);
-    void dibujar(SFMLRenderer* renderer);
+    
 };
