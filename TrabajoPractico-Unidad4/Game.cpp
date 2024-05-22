@@ -170,6 +170,20 @@ void Game::InitPhysics()
 	b2Body* techo = Box2DHelper::CreateRectangularStaticBody(phyWorld, 100, 10);
 	techo->SetTransform(b2Vec2(50.0f, 0.0f), 0.0f);
 
+	b2Body* obstaculo1 = Box2DHelper::CreateRectangularStaticBody(phyWorld, 20, 5);
+	obstaculo1->SetTransform(b2Vec2(60.0f, 60.0f), 0.0f);
+
+	b2Body* obstaculo2 = Box2DHelper::CreateRectangularStaticBody(phyWorld, 20, 10);
+	obstaculo2->SetTransform(b2Vec2(80.0f, 80.0f), 0.0f);
+
+
+	b2Body* obstaculo3 = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 5, 10, 0.1f, 0.1f, 0.1f);
+	obstaculo3->SetTransform(b2Vec2(80.0f, 70.0f), 0.0f);
+
+	b2Body* obstaculo4 = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 5, 10, 0.1f, 0.1f, 0.1f);
+	obstaculo4->SetTransform(b2Vec2(55.0f, 53.0f), 0.0f);
+
+
 
 	b2Body* cannon_base = Box2DHelper::CreateCircularStaticBody(phyWorld, 2);
 	cannon_base->SetTransform(b2Vec2(6.0f, 93.0f), 0.0f);
